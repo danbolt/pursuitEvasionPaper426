@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{algorithm2e}
 
 \linespread{1.3}
 
@@ -26,7 +27,7 @@ In the Discrete Formulation of Pursuit-Evasion problems, scenarios are usually p
 
 There can be varieties on each of the rules for this scenario. The Pursuer(s) and/or evader(s) may not need to necessarily move each turn, which can sometimes determine whether or not one side wins or loses. Also the pursuer(s) or evader(s) may not have perfect information when making decisions, only able to "see" others at certain distances. If pursuers do not know any information other than the node they occupy, we can often represent these scenarios as search games. \cite{parsons}
 
-Provided that \(G\) is a planar graph, we can make the assumption that we will only need at most three pursuers to catch all evaders. \cite{copsRobbers} We can show this with the following algorithm:
+Provided that \(G\) is a planar graph, we can make the assumption that we will only need at most three pursuers to catch all evaders, as proven by Aigner and Fromme. This is performed by one to three pursuers sequentially closing off the region occupied by an evader, tackling each one at a time. One pursuer is able to step into the area where the evader is free to move, and its cohorts (if any) are able to cover its congruent spaces, taking advantage of the planar properties of the graph. This is repeated until each evader is caught. \cite{copsRobbers}
 
 \section{Paradigm 2 - Formulation on the Continuous Plane}
 % explanation of the paradigm
