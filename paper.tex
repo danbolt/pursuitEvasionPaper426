@@ -1,6 +1,7 @@
 \documentclass{article}
 
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{algorithm2e}
 
 \linespread{1.3}
@@ -30,12 +31,14 @@ There can be varieties on each of the rules for this scenario. The Pursuer(s) an
 Provided that \(G\) is a planar graph, we can make the assumption that we will only need at most three pursuers to catch all evaders, as proven by Aigner and Fromme. This is performed by one to three pursuers sequentially closing off the region occupied by an evader, tackling each one at a time. One pursuer is able to step into the area where the evader is free to move, and its cohorts (if any) are able to cover its congruent spaces, taking advantage of the planar properties of the graph. This is repeated until each evader is caught. \cite{copsRobbers}
 
 \section{Paradigm 2 - Formulation on the Continuous Plane}
-% explanation of the paradigm
+Whilst the Discrete Formulation offers a powerful strategic methodology, it does not sadly reflect a realistic situation very well for a group of pursuers. Movements are not made in instantaneous, distinguishable jumps in reality, nor is Pursuit-Evasion generally a perfect-information game. Formulation on a Continuous Plane, or Continuous Formulation, is the idea behind expressing a Pursuit-Evasion scenario as a geometric real-world model. Concepts for applications of this model often include teams of robots searching for people in an enclosed space.
+
 % mathematical definitions and/or data structures
-% general setup and rules of "play"
-% visibility polygons and gap management
-% area contamination and management
-% NP-hardness
+To start, we will begin by defining the scenario environment as an open set \(R\subset\mathbb{R}^2\). \(R\) is to be a simply-connected and has some sort of polygonal boundary. Some scenarios define that \(R\) has holes. \(P\subset R\) is assumed to be the set of points that represent the locations of the various pursuers of the scenario. Accordingly \(E\subset R\) is assumed to make up the set of evaders, their locations being represented as points as well. Members of \(P\) has perfect information about their location with respect to \(R\) and each other, but not necessarily \(E\). Both pursuers and evaders move at various speeds within \(R\). Members of \(P\) generally are expected to move at a bounded consistent speed \(V_P\), while evaders can be viewed as having either a bounded speed or in some cases, unbounded. \cite{limVis, robotics} Pursuers are generally considered to have "caught" the evaders when being within a certain distance of them.
+
+As stated previously, the set of pursuers \(P\) do not have perfect information of \(R\) and can only see a combined limited region at one time. Subsequently, they may not know where the evaders \(E\) are located. This visible region is known as the \emph{visibility polygon} \(V\). \(V\) is composed of a collection of line segments that may partially align with \(R\)'s shape itself. It's assumed \(V\)'s topology changes changes as it's corresponding \(P\) moves about \(R\). The line segments of \(V\) are that cross across the face of \(R\)'s polygonal shape are known as \emph{gap edges}. These gap edges allow us to divide \(R\) into shrinking and growing regions of visibility. \cite{limVis, robotics}
+
+To map probability of where evaders may be in \(R\), regions currently not visible are given a status of either \emph{contaminated} or \emph{uncontaminated}. A contaminated space represents the idea that an evader may be hiding within it, and the pursuer(s) can not be certain that the area has been completely checked. When gap edges shrink and change position, regions can split and merge together. If a contaminated region merges with an uncontaminated region, the area is said to be \emph{recontaminated} and needs to be re-checked by the pursuer(s). This is to account for evaders potentially moving from one area outside of \(V\) to another.
 
 \section{Blended Paradigm Concept}
 % explanation of the paradigm (NP-hardness aleviation)
@@ -66,6 +69,20 @@ Provided that \(G\) is a planar graph, we can make the assumption that we will o
   The Pennsylvania State University
   Theory and Applications of Graphs, Volume 642, pp 426-441
   1978
+  
+\bibitem{robotics}
+  Benjamin Tovar and Steven M. LaValle,
+  \emph{Visibility-based Pursuit-Evasion with Bounded Speed}.
+  Department of Computer Science, University of Illinois,
+  The International Journal of Robotics Research 2008 27: 1350,
+  2008
+  
+\bibitem{limVis}
+  Brian P. Gerkey and Sebastian Thrun and Geoff Gordon,
+  \emph{Visibility-based Pursuit-Evasion with limited field of view}.
+  Artificial Intelligence Lab, Stanford University,
+  The National Conference on Artificial Intelligence 2004,
+  2004
 
 \end{thebibliography}
 
