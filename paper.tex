@@ -1,9 +1,13 @@
 \documentclass{article}
 
+\usepackage{amsmath}
+
+\linespread{1.3}
+
 \begin{document}
 
 \title{Implementation Design Patters for Pursuit-Evasion Problems with Bounded Speed}
-\author{Daniel Savage\\CSC 426\\{V00701453}}
+\author{Daniel Savage\\CSC 426\\{V00701453}\\savaged@uvic.ca}
 \date{November 2012}
 \maketitle
 \pagebreak
@@ -14,10 +18,15 @@
 % a solution for blending the two solutions together
 
 \section{Paradigm 1 - Discrete Formulation}
-% explanation of the paradigm
-% mathematical definitions and/or data structures
-% general rules of "play"
-% planar graphs need max three pursuers
+The Discrete Formulation of Pursuit-Evasion studies focus on recognizing scenarios in a set of states on a connected graph. This creates a paradigm where strategies are much more easily recognized and explained. Routes and movements are generalized and win/lose situations for pursuers and evaders can often be predicted ahead of time by the nature of the graph played on.
+
+Let the environment that the pursuers and evaders coexist in be a finite, connected graph \(G\). Let \(G\)'s vertices be represented as \(v_1,v_2,...,v_n\), each being a distinct location in the environment. All edges are considered to be undirected and of equal length. Let the set of all \(q\) pursuers in \(G\) can be represented as \(P = {p_1,...,p_q}\), with each being on some \(v_i\) in \(G\). Subsequently, also let the set of all \(w\) evaders in \(G\) can be represented as \(E = {e_1,...,e_w}\), with each being on some \(v_i\) in \(G\). Any vertex in \(G\) can be occupied by more than one pursuer and/or evader.
+
+In the Discrete Formulation of Pursuit-Evasion problems, scenarios are usually played to the following rules: \(P\) and \(R\) occupy some vertex of \(G\). Subsequently each alternates moving from one adjacent node to another. This alternation can be from one member of each at a time, or all of one's and then another's. The pursuers win the scenario if they are able to "catch" each evader by occupying the same vertex. Evader(s) do not all need to be caught in the same turn. Alternatively, the evader(s) win if at least one of them can evade the pursuer(s) indefinitely.\cite{copsRobbers}
+
+There can be varieties on each of the rules for this scenario. The Pursuer(s) and/or evader(s) may not need to necessarily move each turn, which can sometimes determine whether or not one side wins or loses. Also the pursuer(s) or evader(s) may not have perfect information when making decisions, only able to "see" others at certain distances. If pursuers do not know any information other than the node they occupy, we can often represent these scenarios as search games. \cite{parsons}
+
+Provided that \(G\) is a planar graph, we can make the assumption that we will only need at most three pursuers to catch all evaders. \cite{copsRobbers} We can show this with the following algorithm:
 
 \section{Paradigm 2 - Formulation on the Continuous Plane}
 % explanation of the paradigm
@@ -40,5 +49,23 @@
 % no idea what you're goona write here
 
 \section{References}
+
+\begin{thebibliography}{9}
+
+\bibitem{copsRobbers}
+  M. Aigner and M. Fromme,
+  \emph{A Game of Cops and Robbers}.
+  Math. Institut, Freie Universitat Berlin,
+  Discrete Applied Mathematics, Volume 8, Issue 4,
+  1984
+  
+\bibitem{parsons}
+  T.D. Parsons,
+  \emph{Pursuit-Evasion in a Graph}.
+  The Pennsylvania State University
+  Theory and Applications of Graphs, Volume 642, pp 426-441
+  1978
+
+\end{thebibliography}
 
 \end{document}
