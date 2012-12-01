@@ -51,6 +51,13 @@ Whilst the Discrete Formulation offers a powerful strategic methodology, it does
 
 To start, we will begin by defining the scenario environment as an open set \(R\subset\mathbb{R}^2\). \(R\) is to be a simply-connected and has some sort of polygonal boundary. Some scenarios define that \(R\) has holes. \(P\subset R\) is assumed to be the set of points that represent the locations of the various pursuers of the scenario. Accordingly \(E\subset R\) is assumed to make up the set of evaders, their locations being represented as points as well. Members of \(P\) has perfect information about their location with respect to \(R\) and each other, but not necessarily \(E\). Both pursuers and evaders move at various speeds within \(R\). Members of \(P\) generally are expected to move at a bounded consistent speed \(V_P\), while evaders can be viewed as having either a bounded speed or in some cases, unbounded. \cite{limVis, robotics} Pursuers are generally considered to have "caught" the evaders when being within a certain distance of them.
 
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{"visPoly"}
+\caption{An example scenario on a graph with three steps where the pursuer wins. Note that in this example the evader \(E_1\) must move each turn. If \(E_1\) is able to "stay put" on a turn it can evade \(P_1\) indefinitely}
+\end{figure}
+
+
 As stated previously, the set of pursuers \(P\) do not have perfect information of \(R\) and can only see a combined limited region at one time. Subsequently, they may not know where the evaders \(E\) are located. This visible region is known as the \emph{visibility polygon} \(V\). \(V\) is composed of a collection of line segments that may partially align with \(R\)'s shape itself. It's assumed \(V\)'s topology changes changes as it's corresponding \(P\) moves about \(R\). The line segments of \(V\) are that cross across the face of \(R\)'s polygonal shape are known as \emph{gap edges}. These gap edges allow us to divide \(R\) into shrinking and growing regions of visibility. \cite{limVis, robotics}
 
 To map probability of where evaders may be in \(R\), regions currently not visible are given a status of either \emph{contaminated} or \emph{uncontaminated}. A contaminated space represents the idea that an evader may be hiding within it, and the pursuer(s) can not be certain that the area has been completely checked. When gap edges shrink and change position, regions can split and merge together. If a contaminated region merges with an uncontaminated region, the area is said to be \emph{recontaminated} and needs to be re-checked by the pursuer(s). This is to account for evaders potentially moving from one area outside of \(V\) to another.
