@@ -19,9 +19,13 @@
 \pagebreak
 
 \section{Introduction}
-% Explanation of pursuit-evasion problem in general.
-% The two various methods for analyzing the problem
-% a solution for blending the two solutions together
+Consider the award-winning board game \emph{Scotland Yard} by Milton-Bradley. The concept of the game is for a team of five detectives to track down the nefarious Mr.X in downtown London. Each player takes turns moving a pawn from intersection to intersection across London, attempting to corner Mr.X. Mr.X, while outnumbered, is not entirely visible to the players at all times. The detectives win if they can land on the same intersection as Mr.X within a set number of turns, otherwise Mr.X is crowned victor.
+
+Scotland Yard would be considered by most mathematicians and computer scientists to be a pursuit-evasion game. Pursuit-Evasion games and problems can vary from paradigm to paradigm, but all follow the same basic scenario: one or more members of one group attempt to track down one or more members of another group in some environment. Examples of this often include firefighters looking for people in a building, or search-and-rescue teams looking for people lost in caves. \cite{parsons, robotics}
+
+Two common methods, or \emph{formulations} are used usually to represent a Pursuit-Evasion scenario: the \emph{Discrete Formulation} and the \emph{Formulation on a Continuous Plane}. The Discrete Formulation follows the concept of interpreting the scenario as moving players on a graph, much like the Scotland Yard game. Formulation on the Continuous Plane follows the idea of modeling pursuers and evaders in a geometric, real-time scenario.
+
+Throughout this paper we will examine the two paradigms in more depth and note their characteristics. Subsequently, we will then propose a pursuit-evasion strategy for applying Discrete techniques in a Continuous real-time environment.
 
 \section{Paradigm 1 - Discrete Formulation}
 The Discrete Formulation of Pursuit-Evasion studies focus on recognizing scenarios in a set of states on a connected graph. This creates a paradigm where strategies are much more easily recognized and explained. Routes and movements are generalized and win/lose situations for pursuers and evaders can often be predicted ahead of time by the nature of the graph played on.
@@ -106,7 +110,7 @@ An issue that may arise is evader travel time in a triangle/vertex may be less t
 Strategically, pursuers can follow various techniques to capture evaders in \(R\). The first to come to mind is attempting to clear all contaminated spaces. This may be possible in some graphs, but others could have contamination that spreads faster than it can be removed. Another process is to use the theorem provided by Aigner and Fromme, if three pursuers move along the triangles akin to \(G\), slowly closing in on a potential area, they can encapsulate and close any evader in theory. We can apply this theorem due to the collection of triangles being planar and reflecting onto \(G\). This method would be irrespective of visibility if all pursuers begin in one "corner" of the polygon. 
 
 \section{Conclusion}
-% no idea what you're goona write here
+In this paper we have reviewed the most recognized concepts Pursuit-Evasion and examined certain parts of their characteristics. Subsequently, we then presented a combination of their strategies to allow for a real-time, geometric paradigm of the problem that allows for discrete strategies to be applied. While we did not have the time or resources to implement this solution in real-time, we have ground to believe that this solution would work in an unbounded speed case with the right strategies in place.
 
 \begin{thebibliography}{9}
 
