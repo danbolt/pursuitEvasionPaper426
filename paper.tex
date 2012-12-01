@@ -54,9 +54,8 @@ To start, we will begin by defining the scenario environment as an open set \(R\
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.7\textwidth]{"visPoly"}
-\caption{An example scenario on a graph with three steps where the pursuer wins. Note that in this example the evader \(E_1\) must move each turn. If \(E_1\) is able to "stay put" on a turn it can evade \(P_1\) indefinitely}
+\caption{A pursuer P in an example R. The visibility polygon for P is shaded in showing the area P can view. Note the edge gaps that bound the visibility polygon and the rest of R. If P were to move as far to the right as possible, the visible area near to the top of R would vanish.}
 \end{figure}
-
 
 As stated previously, the set of pursuers \(P\) do not have perfect information of \(R\) and can only see a combined limited region at one time. Subsequently, they may not know where the evaders \(E\) are located. This visible region is known as the \emph{visibility polygon} \(V\). \(V\) is composed of a collection of line segments that may partially align with \(R\)'s shape itself. It's assumed \(V\)'s topology changes changes as it's corresponding \(P\) moves about \(R\). The line segments of \(V\) are that cross across the face of \(R\)'s polygonal shape are known as \emph{gap edges}. These gap edges allow us to divide \(R\) into shrinking and growing regions of visibility. \cite{limVis, robotics}
 
@@ -69,25 +68,45 @@ The aim of this section is to present a paradigm that attempts to combine both a
 % mathematical definitions and/or data structures
 To start, we will begin by defining the scenario environment as an open set \(R\subset\mathbb{R}^2\). \(R\) is to be a simply-connected and has some sort of polygonal boundary. Let sets \(P,E\subset{R}\) be the positions of the pursuers and evaders and their velocities identical to that found in the Continuous Formulation. Let \(G\) be an undirected, weighted-edge graph representing \(R\), with each of its vertex in a state being either \emph{visible, uncontaminated,} or \emph{contaminated}. Later in this section we will explain how \(G\) represents \(R\). Each pursuer and evader will keep track of which vertex it currently "occupies". It is also assumed that all pursuers in \(P\) know their location relative to \(R\).
 
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{"trangulation"}
+\caption{A diagram showing the process for deriving \(G\) from \(R\). In (1) the initial environment is visible. Subsequently it is triangulated using Delaunay Triangulation in (2). Finally, adjacent triangles are used to construct the edges and nodes for \(G\) in (3).}
+\end{figure}
+
 % delunay triangulation and minimum spanning tree connection
 To have \(G\) represent \(R\), we take advantage of \(R\)'s shape being a closed polygon. By performing, a Delaunay Triangulation on \(R\), we acquire a triangulation composed of \(R\)'s vertices. \cite{dTri} It is assumed that the triangles outside of \(R\) are "stripped" and discarded immediately. We are left with a set of adjacent triangles that make up \(R\). For each triangle, add a corresponding vertex to \(G\) and add an edge between each adjacent triangle. The weight of an edge between two triangle's vertices is the distance between each triangle's midpoint in barycentric coordinates. \cite{bCenter} \(G\) now represents a set of general areas in \(R\) and the approximate distances between each.
 
-%sexy diagram
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{"visibility"}
+\caption{A diagram showing \(R\) divided into triangles according to \(G\) and the visibility according to various pursuer locations. Note that visibility is not a function of which triangle/vertex in \(G\) the pursuer is located in.}
+\end{figure}
 
 A running scenario for the Blended Paradigm looks incredibly similar to the Continuous Formulation. The main difference is that instead of managing sets of changing visibility polygons, visibility is generalized into triangular sections which are managed in \(G\). Let is be assumed for a pursuer to "catch" an evader, they must both be inside the same triangulated region. In real-time, a pursuer checks at each moment which triangulated regions it can completely see. If a region can be completely seen in \(R\) it is marked as visible in \(G\). A triangulated region that was once visible in \(R\) but subsequently no longer is considered uncontaminated. Regions that have never been visible are considered contaminated. 
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{"contamination"}
+\caption{A diagram showing \(R\) with a contamination spreading from the right. Note that the contamination does not necessarily spread at the closest path in the euclidean plane and would require smaller triangles.}
+\end{figure}
 
 Contaminated triangles and vertices in \(G\) are meant to represent regions in \(R\) where an evader could possibly be. In that case, if a contaminated region is adjacent to an uncontaminated region, it is possible that an evader could move from the contaminated to the uncontaminated region, making both uncontaminated. This creates a degree of "spreading" contamination that needs to be kept in check by the pursuers. Since the evaders move at a bounded speed though, it can be expected that contamination does not happen necessarily instantaneously. For this reason the edges in \(G\) have a weight associated with them. Contamination from one vertex/triangle to another happens after a delay \(D\) where: \begin{displaymath}
 D = \frac{\text{length of edge between vertices}}{\text{maximum bounded speed of evader(s)}}\times \text{S} ; S\in(0,1]
 \end{displaymath}\(S\) represents a "shortcut" value, which can be altered to scale contamination speed/ Evaders may not necessarily go from center to center in each triangle, and could spend less time in one than expected.
 
-An issue that may arise is evader travel time in a triangle/vertex may be less than the estimated contamination delay. An evader may only spend a moment crossing a corner of a triangle and jump ahead of the spreading contamination, for example. To help alleviate this error ahead of time, one can subdivide a triangle/vertex into three at it's barycentric center. This technique divides areas into smaller regions with faster contamination speeds, allowing for a granularity closer to \(\mathbb{R}^2\).
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.7\textwidth]{"tesslation"}
+\caption{A diagram showing \(R\) with its triangles subdivided into smaller triangles. Note the population of \(G\) has multiplied by 3. If this were to be continued the triangles would likely be indistinguishable from \(\mathbb{R}^2\).}
+\end{figure}
+
+An issue that may arise is evader travel time in a triangle/vertex may be less than the estimated contamination delay. An evader may only spend a moment crossing a corner of a triangle and jump ahead of the spreading contamination, for example. To help alleviate this error ahead of time, one can subdivide a triangle/vertex into three at it's barycentric center. This technique divides areas into smaller regions with faster contamination speeds, allowing for a granularity closer to \(\mathbb{R}^2\). It's important to keep note that \(G\) still keeps its planar status even when subdivided.
 
 Strategically, pursuers can follow various techniques to capture evaders in \(R\). The first to come to mind is attempting to clear all contaminated spaces. This may be possible in some graphs, but others could have contamination that spreads faster than it can be removed. Another process is to use the theorem provided by Aigner and Fromme, if three pursuers move along the triangles akin to \(G\), slowly closing in on a potential area, they can encapsulate and close any evader in theory. We can apply this theorem due to the collection of triangles being planar and reflecting onto \(G\). This method would be irrespective of visibility if all pursuers begin in one "corner" of the polygon. 
 
 \section{Conclusion}
 % no idea what you're goona write here
-
-\section{References}
 
 \begin{thebibliography}{9}
 
